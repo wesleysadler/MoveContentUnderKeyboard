@@ -146,6 +146,7 @@
                                             <outlet property="imageBirdView" destination="kmj-6f-aG1" id="W9X-qj-Fvx"/>
                                             <outlet property="labelBirdName" destination="p0i-Ze-QZB" id="LAU-eb-EpD"/>
                                             <outlet property="labelBirdScientificName" destination="D7x-Nc-6i9" id="1nk-yF-70V"/>
+                                            <outlet property="labelSpacer" destination="2uj-di-UeM" id="knY-2U-7p2"/>
                                             <outlet property="locationBirdsTextField" destination="NpF-UD-7zP" id="wyM-Ry-U61"/>
                                             <outlet property="numberBirdsTextField" destination="scf-4D-pna" id="oz2-B8-kyf"/>
                                             <outlet property="switchToggle" destination="bfC-sH-ggJ" id="jwE-fg-vFS"/>

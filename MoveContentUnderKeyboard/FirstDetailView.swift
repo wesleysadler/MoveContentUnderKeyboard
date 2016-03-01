@@ -102,6 +102,7 @@ class FirstDetailView: UIView, UITextFieldDelegate {
     @IBOutlet weak var locationBirdsTextField: UITextField!
     @IBOutlet weak var descriptionBirdsTextField: UITextField!
     
+    @IBOutlet weak var labelSpacer: UILabel!
     
     private var delegate: FirstViewPresentable?
     
@@ -109,6 +110,8 @@ class FirstDetailView: UIView, UITextFieldDelegate {
     func configure(withPresenter presenter: FirstViewPresentable) {
         delegate = presenter
         
+        // remove text from spacer label
+        labelSpacer.text = ""
         // configure the UI components
         labelBirdName.text = presenter.birdNameLabelText
         labelBirdName.textColor = presenter.birdNameLabelTextColor
