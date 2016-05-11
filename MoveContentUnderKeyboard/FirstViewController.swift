@@ -40,8 +40,8 @@ class FirstViewController: UIViewController {
     
     func registerForKeyboardNotifications() {
         // Adding notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: #selector(FirstDetailView.keyboardWasShown), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: #selector(FirstDetailView.keyboardWillBeHidden), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications() {
