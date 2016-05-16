@@ -78,8 +78,8 @@ class SecondViewController: UIViewController {
     
     func registerForKeyboardNotifications() {
         // Adding notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWasShown), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillBeHidden), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications() {
