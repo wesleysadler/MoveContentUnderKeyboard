@@ -14,16 +14,15 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var detailView: FirstDetailView!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    // MARK: View Controller Lifecycle
+    // MARK: Properties
     
-    deinit {
-        self.deregisterFromKeyboardNotifications()
-    }
+    private var notificationTokens = [NotificationToken]()
+
+    
+    // MARK: View Controller Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.registerForKeyboardNotifications()
         
         let firstViewModel = FirstViewModel(birdName: "American Robin", scientificName: "Turdus-migratorius", birdImageFileName: "Turdus-migratorius.png")
         
@@ -31,24 +30,55 @@ class FirstViewController: UIViewController {
 
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerKeyboardNotifications()
     }
 
-    // MARK: Keyboard Notifications for keyboard
-    
-    func registerForKeyboardNotifications() {
-        // Adding notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: #selector(FirstDetailView.keyboardWasShown), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(detailView, selector: #selector(FirstDetailView.keyboardWillBeHidden), name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func deregisterFromKeyboardNotifications() {
-        // Removing notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().removeObserver(detailView, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(detailView, name: UIKeyboardWillHideNotification, object: nil)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        unregisterKeyboardNotifications()
     }
 
+    
+    // MARK: Keyboard Notifications
+    
+    func registerKeyboardNotifications() {
+        let center = NotificationCenter.default
+        
+        let keyboardWillShowToken = center.addObserver(forDescriptor: UIViewController.keyboardWillShow) { (payload) in
+            let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: payload.endFrame.height, right: 0.0)
+            self.scrollView.contentInset = contentInsets
+            self.scrollView.scrollIndicatorInsets = contentInsets
+            
+            var visibleFrame = self.scrollView.frame
+            visibleFrame = CGRect(x: visibleFrame.minX, y: visibleFrame.minY, width: visibleFrame.width, height: visibleFrame.height - payload.endFrame.height)
+            
+            guard let active = self.detailView.activeTextField else {
+                return
+            }
+            guard !visibleFrame.contains(active.frame.origin) else { return }
+            self.scrollView.scrollRectToVisible(active.frame, animated: true)
+
+        }
+        
+        notificationTokens.append(keyboardWillShowToken)
+
+        let keyboardWillHideToken = center.addObserver(forDescriptor: UIViewController.keyboardWillHide) { _ in
+
+            // Restore view too original position
+            let contentInsets = UIEdgeInsets.zero
+            self.scrollView.contentInset = contentInsets
+            self.scrollView.scrollIndicatorInsets = contentInsets
+        }
+        
+        notificationTokens.append(keyboardWillHideToken)
+    }
+    
+    func unregisterKeyboardNotifications() {
+        notificationTokens.removeAll()
+    }
 }
 

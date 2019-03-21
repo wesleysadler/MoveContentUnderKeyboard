@@ -25,7 +25,6 @@ struct FirstViewModel: FirstViewPresentable {
         self.scientificName = scientificName
         self.birdImageFileName = birdImageFileName
     }
-    
 }
 
 // MARK: BirdNameLabelPresentable Conformance

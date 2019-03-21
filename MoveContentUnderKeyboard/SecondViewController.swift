@@ -10,6 +10,10 @@ import UIKit
 
 class SecondViewController: UIViewController {
 
+    // MARK: Properties
+    
+    private var notificationTokens = [NotificationToken]()
+    
     struct SecondModel {
         var birdName: String
         var scientificName: String
@@ -28,7 +32,7 @@ class SecondViewController: UIViewController {
 
     var secondModel: SecondModel?
     
-    weak var activeTextField: UITextField?
+    var activeTextField: UITextField?
     
     // Note: the background color of the scroll view is light grey to show the difference in size from content view
     @IBOutlet weak var scrollView: UIScrollView!
@@ -44,54 +48,92 @@ class SecondViewController: UIViewController {
     
     // MARK: View Controller lifecycle methods
     
-    deinit {
-        self.deregisterFromKeyboardNotifications()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.registerForKeyboardNotifications()
         
         secondModel = SecondModel(aBirdName: "House Wren", aScientificName: "Troglodytes-aedon", aImageFileName: "Troglodytes-aedon.png")
         
         imageBirdView.image = UIImage(named: (secondModel?.birdImageFileName)!)
         
         labelBirdName.text = secondModel?.birdName
-        labelBirdName.textAlignment = .Center
-        labelBirdName.font = .boldSystemFontOfSize(22.0)
+        labelBirdName.textAlignment = .center
+        labelBirdName.font = .boldSystemFont(ofSize: 22.0)
         labelBirdName.adjustsFontSizeToFitWidth = true
         
         labelBirdScientificName.text = secondModel?.scientificName
-        labelBirdScientificName.textAlignment = .Center
-        labelBirdScientificName.font = .boldSystemFontOfSize(17.0)
+        labelBirdScientificName.textAlignment = .center
+        labelBirdScientificName.font = .boldSystemFont(ofSize: 17.0)
         labelBirdScientificName.adjustsFontSizeToFitWidth = true
+        
+        // OPTION 1
+//        scrollView.keyboardDismissMode = .onDrag
+
+        // OPTION 2
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(sender:)))
+//        view.addGestureRecognizer(tap)
     }
         
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerKeyboardNotifications()
     }
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        unregisterKeyboardNotifications()
+    }
+
+    // MARK: - Gesture Actions
+    @objc func dismissKeyboard(sender: UITapGestureRecognizer) {
+        guard let active = activeTextField else { return }
+        
+        active.resignFirstResponder()
+    }
+
     // MARK: Keyboard Notifications for keyboard
     
-    func registerForKeyboardNotifications() {
-        // Adding notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWasShown), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillBeHidden), name: UIKeyboardWillHideNotification, object: nil)
+    func registerKeyboardNotifications() {
+        let center = NotificationCenter.default
+        
+        let keyboardWillShowToken = center.addObserver(forDescriptor: UIViewController.keyboardWillShow) { (payload) in
+            let contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: payload.endFrame.height, right: 0.0)
+            self.scrollView.contentInset = contentInset
+            self.scrollView.scrollIndicatorInsets = contentInset
+            
+            var visibleFrame = self.scrollView.frame
+            visibleFrame = CGRect(x: visibleFrame.minX, y: visibleFrame.minY, width: visibleFrame.width, height: visibleFrame.height - payload.endFrame.height)
+            
+            guard let active = self.activeTextField else {
+                return
+            }
+            guard !visibleFrame.contains(active.frame.origin) else { return }
+
+            var bkgndRect = active.superview?.frame
+            bkgndRect?.size.height += payload.endFrame.height
+            active.superview?.frame = bkgndRect!
+            self.scrollView.setContentOffset(CGPoint(x: 0.0, y: active.frame.origin.y - payload.endFrame.height), animated: true)
+        }
+        
+        notificationTokens.append(keyboardWillShowToken)
+        
+        let keyboardWillHideToken = center.addObserver(forDescriptor: UIViewController.keyboardWillHide) { _ in
+            let contentInset = UIEdgeInsets.zero
+            self.scrollView.contentInset = contentInset
+            self.scrollView.scrollIndicatorInsets = contentInset
+        }
+        notificationTokens.append(keyboardWillHideToken)
     }
     
-    func deregisterFromKeyboardNotifications() {
-        // Removing notifies on keyboard show and hide
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    func unregisterKeyboardNotifications() {
+        notificationTokens.removeAll()
     }
     
     // Called when the UIKeyboardDidShowNotification is sent
-    func keyboardWasShown(notification: NSNotification) {
+    @objc func keyboardWasShown(notification: NSNotification) {
 
-        if let activeField = self.activeTextField, keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
+        if let activeField = self.activeTextField, let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size {
 
             let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
             self.scrollView.contentInset = contentInsets
@@ -100,32 +142,38 @@ class SecondViewController: UIViewController {
             aRect.size.height -= keyboardSize.height
             
             // active text field is hidden by keyboard, scroll text field so it's visible
-            if (!CGRectContainsPoint(aRect, activeField.frame.origin)) {
+            if (!aRect.contains(activeField.frame.origin)) {
                 var bkgndRect = activeField.superview?.frame
                 bkgndRect?.size.height += keyboardSize.height
                 activeField.superview?.frame = bkgndRect!
-                scrollView.setContentOffset(CGPointMake(0.0, activeField.frame.origin.y - keyboardSize.height), animated: true)
+                scrollView.setContentOffset(CGPoint(x: 0.0, y: activeField.frame.origin.y - keyboardSize.height), animated: true)
             }
         }
         
     }
     
     // Called when the UIKeyboardWillHideNotification is sent
-    func keyboardWillBeHidden(notification: NSNotification) {
+    @objc func keyboardWillBeHidden(notification: NSNotification) {
         // Restore view too original position
-        let contentInsets = UIEdgeInsetsZero
+        let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
     }
+}
+
+// MARK: UITextFieldDelegate
+
+extension SecondViewController: UITextFieldDelegate {
     
-    // MARK: UITextFieldDelegate
-    
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         activeTextField = textField
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
-        activeTextField = nil
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if activeTextField === textField {
+            activeTextField = nil
+        }
         
         switch textField {
             
@@ -145,13 +193,13 @@ class SecondViewController: UIViewController {
             
         }
     }
-    
-    // Hide the keyboard when the user taps the "Return" key or its equivalent
-    // while editing a text field.
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true;
+    // OPTION 3
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if activeTextField === textField {
+            activeTextField?.resignFirstResponder()
+        }
+        return true
     }
-
 }
 

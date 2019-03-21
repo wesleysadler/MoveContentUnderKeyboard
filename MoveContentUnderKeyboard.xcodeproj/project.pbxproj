@@ -16,6 +16,11 @@
 		5576E04A1C7FE7C3009FD0C4 /* MoveContentUnderKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576E0491C7FE7C3009FD0C4 /* MoveContentUnderKeyboardTests.swift */; };
 		5576E0551C7FF2D4009FD0C4 /* FirstDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576E0541C7FF2D4009FD0C4 /* FirstDetailView.swift */; };
 		5576E0571C8006CF009FD0C4 /* FirstViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5576E0561C8006CF009FD0C4 /* FirstViewModel.swift */; };
+		E45E51F92242836100C28B33 /* NotificationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45E51F62242836100C28B33 /* NotificationToken.swift */; };
+		E45E51FA2242836100C28B33 /* KeyboardPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45E51F72242836100C28B33 /* KeyboardPayload.swift */; };
+		E45E51FB2242836100C28B33 /* NotificationDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45E51F82242836100C28B33 /* NotificationDescriptor.swift */; };
+		E45E51FF224283A500C28B33 /* NotificationCenter+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45E51FD224283A400C28B33 /* NotificationCenter+Keyboard.swift */; };
+		E45E5200224283A500C28B33 /* UIViewController+NotificationsKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45E51FE224283A500C28B33 /* UIViewController+NotificationsKeyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +47,11 @@
 		5576E04B1C7FE7C3009FD0C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5576E0541C7FF2D4009FD0C4 /* FirstDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstDetailView.swift; sourceTree = "<group>"; };
 		5576E0561C8006CF009FD0C4 /* FirstViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewModel.swift; sourceTree = "<group>"; };
+		E45E51F62242836100C28B33 /* NotificationToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationToken.swift; sourceTree = "<group>"; };
+		E45E51F72242836100C28B33 /* KeyboardPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPayload.swift; sourceTree = "<group>"; };
+		E45E51F82242836100C28B33 /* NotificationDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDescriptor.swift; sourceTree = "<group>"; };
+		E45E51FD224283A400C28B33 /* NotificationCenter+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Keyboard.swift"; sourceTree = "<group>"; };
+		E45E51FE224283A500C28B33 /* UIViewController+NotificationsKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NotificationsKeyboard.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +93,7 @@
 		5576E0311C7FE7C3009FD0C4 /* MoveContentUnderKeyboard */ = {
 			isa = PBXGroup;
 			children = (
+				E45E51F52242832800C28B33 /* Notifications */,
 				5576E0321C7FE7C3009FD0C4 /* AppDelegate.swift */,
 				5576E0341C7FE7C3009FD0C4 /* FirstViewController.swift */,
 				5576E0541C7FF2D4009FD0C4 /* FirstDetailView.swift */,
@@ -103,6 +114,26 @@
 				5576E04B1C7FE7C3009FD0C4 /* Info.plist */,
 			);
 			path = MoveContentUnderKeyboardTests;
+			sourceTree = "<group>";
+		};
+		E45E51F52242832800C28B33 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				E45E51FC2242839300C28B33 /* Extensions */,
+				E45E51F72242836100C28B33 /* KeyboardPayload.swift */,
+				E45E51F82242836100C28B33 /* NotificationDescriptor.swift */,
+				E45E51F62242836100C28B33 /* NotificationToken.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		E45E51FC2242839300C28B33 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E45E51FD224283A400C28B33 /* NotificationCenter+Keyboard.swift */,
+				E45E51FE224283A500C28B33 /* UIViewController+NotificationsKeyboard.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,11 +181,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Digital Sadler";
 				TargetAttributes = {
 					5576E02E1C7FE7C3009FD0C4 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = GHFKZ9Z99X;
 					};
 					5576E0441C7FE7C3009FD0C4 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -206,10 +238,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E45E51F92242836100C28B33 /* NotificationToken.swift in Sources */,
+				E45E51FA2242836100C28B33 /* KeyboardPayload.swift in Sources */,
 				5576E0371C7FE7C3009FD0C4 /* SecondViewController.swift in Sources */,
 				5576E0571C8006CF009FD0C4 /* FirstViewModel.swift in Sources */,
 				5576E0331C7FE7C3009FD0C4 /* AppDelegate.swift in Sources */,
+				E45E51FF224283A500C28B33 /* NotificationCenter+Keyboard.swift in Sources */,
+				E45E51FB2242836100C28B33 /* NotificationDescriptor.swift in Sources */,
 				5576E0551C7FF2D4009FD0C4 /* FirstDetailView.swift in Sources */,
+				E45E5200224283A500C28B33 /* UIViewController+NotificationsKeyboard.swift in Sources */,
 				5576E0351C7FE7C3009FD0C4 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,13 +297,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -288,7 +335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -305,13 +352,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -327,9 +384,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -339,10 +397,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GHFKZ9Z99X;
 				INFOPLIST_FILE = MoveContentUnderKeyboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.digitalsadler.MoveContentUnderKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -350,10 +410,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GHFKZ9Z99X;
 				INFOPLIST_FILE = MoveContentUnderKeyboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.digitalsadler.MoveContentUnderKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -400,6 +462,7 @@
 				5576E0501C7FE7C3009FD0C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5576E0511C7FE7C3009FD0C4 /* Build configuration list for PBXNativeTarget "MoveContentUnderKeyboardTests" */ = {
 			isa = XCConfigurationList;
@@ -408,6 +471,7 @@
 				5576E0531C7FE7C3009FD0C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
